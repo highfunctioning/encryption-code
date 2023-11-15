@@ -1,0 +1,54 @@
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RSAEncryption {
+
+    // Function to divide a message into 3-byte chunks
+    public static List<String> splitMessage(String message) {
+        int chunkSize = 3;
+        List<String> chunks = new ArrayList<>();
+        for (int i = 0; i < message.length(); i += chunkSize) {
+            int end = Math.min(i + chunkSize, message.length());
+            chunks.add(message.substring(i, end));
+        }
+        return chunks;
+    }
+
+    // Function to convert a chunk to an integer
+    public static BigInteger chunkToInt(String chunk) {
+        byte[] bytes = chunk.getBytes();
+        return new BigInteger(bytes);
+    }
+
+    // RSA encryption function
+    public static List<BigInteger> rsaEncrypt(List<BigInteger> message, BigInteger e, BigInteger n) {
+        List<BigInteger> encrypted = new ArrayList<>();
+        for (BigInteger chunk : message) {
+            encrypted.add(chunk.modPow(e, n));
+        }
+        return encrypted;
+    }
+
+    public static void main(String[] args) {
+        // Input your values of n, e, and message
+        BigInteger n = new BigInteger("2156554007"); // Replace with your value of n
+        BigInteger e = new BigInteger("4099");       // Replace with your value of e
+        String message = "Hello World";             // Replace with your message
+
+        // Step a: Divide the message into 3-byte chunks
+        List<String> chunks = splitMessage(message);
+
+        // Step b: Convert each chunk into a BigInteger
+        List<BigInteger> integers = new ArrayList<>();
+        for (String chunk : chunks) {
+            integers.add(chunkToInt(chunk));
+        }
+
+        // Step d: Encrypt each BigInteger number
+        List<BigInteger> encrypted = rsaEncrypt(integers, e, n);
+
+        // Step e: Send the list of BigIntegers (ciphertext) to your partner
+        System.out.println("Ciphertext (List of BigIntegers): " + encrypted);
+    }
+}
