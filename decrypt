@@ -1,28 +1,30 @@
-# RSA decryption function
-def rsa_decrypt(ciphertext, d, n):
-    decrypted = [pow(chunk, d, n) for chunk in ciphertext]
-    return decrypted
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
-# Function to convert an integer to a chunk
-def int_to_chunk(integer):
-    return integer.to_bytes((integer.bit_length() + 7) // 8, byteorder='big').decode('utf-8', errors='replace')
+public class RSADecryption {
 
-# Input your values of d and n
-d = 432974899  # Replace with your private key component d
-n = 2156554007  # Replace with your value of n
+    public static void main(String[] args) {
+        // Provided private key components
+        BigInteger d = new BigInteger("432974899");
+        BigInteger n = new BigInteger("2156554007");
 
-# Replace with the received ciphertext
-received_ciphertext = [423543815, 1084181851, 668688770]# Replace with the received ciphertext
+        // Given ciphertext
+        BigInteger[] receivedCiphertext = {
+                new BigInteger("1299420479"),
+                new BigInteger("1760505387"),
+                new BigInteger("692555224"),
+                new BigInteger("1936256805"),
+                new BigInteger("1402970726")
+        };
 
-# Step f: Decrypt each integer number using your private key
-decrypted_integers = rsa_decrypt(received_ciphertext, d, n)
+        // Decrypt each integer number using the private key
+        StringBuilder decryptedMessage = new StringBuilder();
+        for (BigInteger chunk : receivedCiphertext) {
+            BigInteger decryptedChunk = chunk.modPow(d, n);
+            decryptedMessage.append(new String(decryptedChunk.toByteArray(), StandardCharsets.UTF_8));
+        }
 
-# Step g: Convert each decrypted integer to a chunk
-decrypted_chunks = [int_to_chunk(integer) for integer in decrypted_integers]
-
-# Step h: Join the chunks to get the decrypted message
-decrypted_message = ''.join(decrypted_chunks)
-
-# Step i: Print the decrypted message
-print("Decrypted Message:", decrypted_message)
-
+        // Print the decrypted message
+        System.out.println("Decrypted Message: " + decryptedMessage.toString());
+    }
+}
