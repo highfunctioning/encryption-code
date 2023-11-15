@@ -32,8 +32,8 @@ public class RSAEncryption {
 
     public static void main(String[] args) {
         // Input your values of n, e, and message
-        BigInteger n = new BigInteger("2156554007"); // Replace with your value of n
-        BigInteger e = new BigInteger("4099");       // Replace with your value of e
+        BigInteger n = new BigInteger("	3287248351"); // Replace with your value of n
+        BigInteger e = new BigInteger("3817");       // Replace with your value of e
         String message = "Hello World";             // Replace with your message
 
         // Step a: Divide the message into 3-byte chunks
