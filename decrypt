@@ -5,8 +5,8 @@ public class RSADecryption {
 
     public static void main(String[] args) {
         // Provided private key components
-        BigInteger d = new BigInteger("432974899");
-        BigInteger n = new BigInteger("2156554007");
+        BigInteger d = new BigInteger("3287248351");
+        BigInteger n = new BigInteger("2251992033");
 
         // Given ciphertext
         BigInteger[] receivedCiphertext = {
