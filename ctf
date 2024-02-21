@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <iostream>
+#include <string>
+
+typedef struct {
+    unsigned char S[256];
+    int i;
+    int j;
+} X;
+
+void a(X *b, const unsigned char* c, int d) {
+    for (int i = 0; i < 256; ++i) {
+        b->S[i] = i;
+    }
+    int j = 0;
+    for (int i = 0; i < 256; ++i) {
+        j = (j + b->S[i] + c[i % d]) % 256;
+        unsigned char temp = b->S[i];
+        b->S[i] = b->S[j];
+        b->S[j] = temp;
+    }
+    b->i = 0;
+    b->j = 0;
+}
+
+unsigned char e(X *f) {
+    f->i = (f->i + 1) % 256;
+    f->j = (f->j + f->S[f->i]) % 256;
+    unsigned char temp = f->S[f->i];
+    f->S[f->i] = f->S[f->j];
+    f->S[f->j] = temp;
+    return f->S[(f->S[f->i] + f->S[f->j]) % 256];
+}
+
+void g(X *h, const unsigned char* i, int j, unsigned char* k) {
+    for (int l = 0; l < j; ++l) {
+        k[l] = i[l] ^ e(h);
+    }
+}
+
+void m(const char* n, unsigned char* o) {
+    int len = strlen(n);
+    for (int i = 0; i < len; ++i) {
+        o[i] = n[i];
+    }
+}
+
+void p(const unsigned char* q, int r) {
+    for (int i = 0; i < r; ++i) {
+        printf("%02X", q[i]);
+    }
+    printf("\n");
+}
+
+std::string s(const std::string& t) {
+    std::string u = t;
+    for (char& v : u) {
+        if (std::isalpha(v)) {
+            char w = std::islower(v) ? 'a' : 'A';
+            v = w + (v - w + 13) % 26;
+        }
+    }
+    return u;
+}
+
+int main() {
+    unsigned long long x = 65537;
+    unsigned long long y = 951631184579073;
+    const char* z = "Abu Simbel";
+
+    unsigned long long aa = 1;
+    for (const char* bb = z; *bb; ++bb) {
+        aa = (aa * (*bb)) % y;
+    }
+
+    unsigned char cc[sizeof(aa)];
+    for (int i = 0; i < sizeof(aa); ++i) {
+        cc[i] = (aa >> (8 * (sizeof(aa) - 1 - i))) & 0xFF;
+    }
+
+    const char* dd = "Giza Necropolis";
+    unsigned char ee[16];
+    m(dd, ee);
+    
+    X ff;
+    a(&ff, ee, strlen(dd));
+
+    unsigned char gg[sizeof(aa)];
+    g(&ff, cc, sizeof(aa), gg);
+
+    char hh[25]; // 24 characters + '\0'
+    for (int i = 0; i < 12; ++i) {
+        sprintf(&hh[i*2], "%02X", gg[i]);
+    }
+    hh[24] = '\0';
+
+    printf("Enter the flag: ");
+    char ii[100];
+    fgets(ii, sizeof(ii), stdin);
+    ii[strcspn(ii, "\n")] = '\0';  // Remove the newline character if present
+    
+    if (strcmp(ii, hh) == 0) {
+        printf("CONGRATULATION YOU GOT THE FLAG !\n");
+    } else {
+        printf("WHERE IS THE FLAG ?\n");
+    }
+
+    std::string jj = "NGUNPXPGS{-}";
+    std::string kk = s(jj);
+
+    return 0;
+}
